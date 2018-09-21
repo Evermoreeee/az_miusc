@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
-//import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 class News extends StatefulWidget {
   const News({ Key key , this.data}) : super(key: key); //构造函数中增加参数
   final String data;    //为参数分配空间
   @override
   _MyTabbedPageState createState() => new _MyTabbedPageState();
 }
+AudioPlayer audioPlayer =  new  AudioPlayer();
 
 //定义TAB页对象，这样做的好处就是，可以灵活定义每个tab页用到的对象，可结合Iterable对象使用，以后讲
 class NewsTab {
@@ -21,11 +24,10 @@ class _MyTabbedPageState extends State<News> with SingleTickerProviderStateMixin
 
   //将每个Tab页都结构化处理下，由于http的请求需要传入新闻类型的参数，因此将新闻类型参数值作为对象属性传入Tab中
   final List<NewsTab> myTabs = <NewsTab>[
-    new NewsTab('你就是Karen Mok',new NewsList(newsType: '莫文蔚')),    //拼音就是参数值
+    new NewsTab('Priscilla Chan',new NewsList(newsType: '陈慧娴')),    //拼音就是参数值
     new NewsTab('Eason',new NewsList(newsType: '陈奕迅')),
     new NewsTab('Jacky Cheung',new NewsList(newsType: '张学友')),
     new NewsTab('滑板鞋',new NewsList(newsType: '庞麦郎')),
-    new NewsTab('下载管理',new NewsList(newsType: 'yule')),
   ];
   TabController _tabController;
 
@@ -40,13 +42,16 @@ class _MyTabbedPageState extends State<News> with SingleTickerProviderStateMixin
     _tabController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.red,
         title: new TabBar(
+          labelColor: Colors.white,
+          labelStyle: new TextStyle(fontSize: 16.0),
+          unselectedLabelColor: Colors.white70,
+          unselectedLabelStyle: new TextStyle(fontSize: 13.0),
           controller: _tabController,
           tabs: myTabs.map((NewsTab item){      //NewsTab可以不用声明
             return new Tab(text: item.text??'错误');
@@ -71,11 +76,9 @@ class _MyTabbedPageState extends State<News> with SingleTickerProviderStateMixin
                       }).toList(),
                     ),
               ),
-
             ]
         ),
       )
-
     );
   }
 }
@@ -173,9 +176,19 @@ class _NewsListState extends State<NewsList>{
         children: <Widget>[
           new GestureDetector(
             onTap: () {
+                  print('开始播放');
+                  play() async {
+                    int result = await audioPlayer.play(newsInfo["fileOptions"][i]['url']);
+                    if (result == 1) {
+                      // success
+                      print('播放成功');
+                    }
+                  }
+                  play();
+
+//              Navigator.of(context).push(newsInfo["fileOptions"][i]['url']);
 //              print(newsInfo["fileOptions"][i]['url']);
-              Navigator.of(context).push(newsInfo["fileOptions"][i]['url']);
-//              print(newsInfo["fileOptions"][i]['url']);
+
             },
             child:  new Container(
                 padding:new EdgeInsets.all(10.0),
@@ -220,61 +233,4 @@ class _NewsListState extends State<NewsList>{
     );
   }
 
-//根据获取到的图片数量控制图片的显示样式
-//  _generateItem(Map newsInfo) {
-//    if (newsInfo["thumbnail_pic_s"] != null &&
-//        newsInfo["thumbnail_pic_s02"] != null &&
-//        newsInfo["thumbnail_pic_s03"] != null) {
-//      return _generateThreePicItem(newsInfo);
-//    } else {
-//      return _generateOnePicItem(newsInfo);
-//    }
-//  }
-
-//仅有一个图片时的效果
-//  _generateOnePicItem(Map newsInfo){
-//    return new Row(
-//      mainAxisSize: MainAxisSize.max,
-//      children: <Widget>[
-//        new Expanded(
-//          child: new Container(
-//            padding: const EdgeInsets.all(3.0),
-//            child: new SizedBox(
-//              child: new Image.network(
-//                newsInfo['thumbnail_pic_s'],
-//                fit: BoxFit.fitWidth,
-//              ),
-//              height: 200.0,
-//            )
-//          )
-//        )
-//      ],
-//    );
-//  }
-
-//有三张图片时的效果
-//  _generateThreePicItem(Map newsInfo){
-//    return new Row(
-//      children: <Widget>[
-//        new Expanded(
-//            child: new Container(
-//                padding: const EdgeInsets.all(4.0),
-//                child: new Image.network(newsInfo['thumbnail_pic_s'])
-//            )
-//        ),
-//        new Expanded(
-//            child: new Container(
-//                padding: const EdgeInsets.all(4.0),
-//                child: new Image.network(newsInfo['thumbnail_pic_s02'])
-//            )
-//        ),
-//        new Expanded(
-//            child: new Container(
-//                padding: const EdgeInsets.all(4.0),
-//                child: new Image.network(newsInfo['thumbnail_pic_s03'])
-//            )
-//        )
-//      ],
-//    );
-//  }
 }

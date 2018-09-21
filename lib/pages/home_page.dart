@@ -14,20 +14,18 @@ class HomePage extends StatefulWidget {
 //用于使用到了一点点的动画效果，因此加入了SingleTickerProviderStateMixin
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
 
-  //定义APP标题变量
-  // String title;
+   String title;
 
-  // changeTilte(String t){
-  //   setState((){
-  //     title = t;
-  //   });
-  // }
-
+   changeTilte(String t){
+     setState((){
+       title = t;
+     });
+   }
   //定义底部导航项目
   final List<Tab> _bottomTabs = <Tab>[
     new Tab(text: '音乐人',icon: new Icon(Icons.home),),    //icon和text的显示顺序已经内定，如需自定义，到child属性里面加吧
-    new Tab(icon: new Icon(Icons.wc),text: '哈哈',),
-    new Tab(icon: new Icon(Icons.accessibility),text: '哈',),
+    new Tab(icon: new Icon(Icons.wc),text: '艺术家',),
+    new Tab(icon: new Icon(Icons.accessibility),text: '程序员',),
   ];
 
   //定义底部导航Tab
@@ -52,7 +50,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return new Scaffold(
           appBar: new AppBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.deepOrange,
             title: new Text('音乐人阿庄'),
           ),   //头部的标题AppBar
           drawer: new Drawer(     //侧边栏按钮Drawer
@@ -60,10 +58,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               children: <Widget>[
                 new UserAccountsDrawerHeader(   //Material内置控件
                   accountName: new Text('音乐人阿庄',
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(color: Colors.deepOrange),
                   ), //用户名
                   accountEmail: new Text('acczhaung@163.com',
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(color: Colors.deepOrange),
                   ),  //用户邮箱
                   currentAccountPicture: new GestureDetector( //用户头像
                     onTap: () => print('current user'),
@@ -130,14 +128,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           body: new TabBarView(
               controller: _bottomNavigation,
               children:  [      //注意顺序与TabBar保持一直
-                new News(data: '2'),
+                new News(data: '5'),
                 new TabPage2(),
                 new TabPage3(),
               ]
             ),
           bottomNavigationBar: new Material(
-            color: Colors.green,   //底部导航栏主题颜色
+            color: Colors.deepOrange,   //底部导航栏主题颜色
             child: new TabBar(
+              labelColor: Colors.white,
+              labelStyle: new TextStyle(fontSize: 16.0),
+              unselectedLabelColor: Colors.white70,
+              unselectedLabelStyle: new TextStyle(fontSize: 12.0),
               controller: _bottomNavigation,
               tabs: _bottomTabs,
 //              indicatorColor: Colors.white, //tab标签的下划线颜色
