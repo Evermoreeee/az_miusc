@@ -185,7 +185,6 @@ class _NewsListState extends State<NewsList>{
                     }
                   }
                   play();
-
 //              Navigator.of(context).push(newsInfo["fileOptions"][i]['url']);
 //              print(newsInfo["fileOptions"][i]['url']);
 
