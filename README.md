@@ -1,8 +1,3 @@
-# flutter_app
+## 数据采集来自QQ音乐
 
-A new Flutter application.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+## 页面没找到好的设计
